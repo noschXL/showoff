@@ -4,12 +4,13 @@ import math
 import sobel
 
 if len(sys.argv) == 1:
-    print("-p           [path]")
+    print("this was originally made by noschXL")
+    print("Usage: python asciiart.py -p [path] -c -s [size]")
+    print("-p [path]    set the image path")
     print("-c           activate colormode")
-    print("-s           set the divide size, 10 by default")
+    print("-s [size]    set the multiplication size, 1 by default")
     print("-h           show this help message")
     sys.exit()
-
 
 path = None
 colorized = False
