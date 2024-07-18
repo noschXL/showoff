@@ -8,12 +8,14 @@ if len(sys.argv) == 1:
     print("Usage: python asciiart.py -p [path] -c -s [size]")
     print("-p [path]    set the image path")
     print("-c           activate colormode")
-    print("-s [size]    set the multiplication size, 1 by default")
+    print("-s [size]    set the multiplication size, 1.0 by default")
+    print("-o           draw outline (experimental)")
     print("-h           show this help message")
     sys.exit()
 
 path = None
 colorized = False
+outlineb = False
 n = 1
 args = sys.argv[1:]
 for p, arg in enumerate(args):
@@ -25,13 +27,16 @@ for p, arg in enumerate(args):
             print("-p [path]    set the image path")
             print("-c           activate colormode")
             print("-s [size]    set the multiplication size, 1 by default")
+            print("-o           draw outline (experimental)")
             print("-h           show this help message")
             sys.exit()
         if arg == "-c":
             colorized = True
+        elif arg == "-o":
+            outlineb = True
         elif arg[0:2] == "-s":
             print(p)
-            n = int(args[p+1])
+            n = float(args[p+1])
         elif arg[0:2] == "-p":
             path = args[p+1]
 
@@ -55,7 +60,8 @@ img = pygame.transform.scale_by(img, 1 / 8)
 imgrect = img.get_rect()
 
 #generating outline
-outline = sobel.getoutline(path, n)
+if not outlineb:
+    outline = sobel.getoutline(path, n)
 
 #generating ascii
 picture = []
@@ -67,10 +73,19 @@ for y in range(math.ceil(imgrect.height / 2)):
         brightness = pixel.grayscale()
         
         char = chars[round(brightness.g / (255 / len(chars))) - 1]
-        row += char
+        if colorized and outlineb:
+            print(1)
+            row += f"\033[38;2;{pixel.r};{pixel.g};{pixel.b}m{char}\033[0m"
+        else:
+            row += char
     picture.append(row)
 
 picture: list[str] = picture
+
+if outlineb:
+    for row in picture:
+        print(row)
+    sys.exit()
 
 # generating ascii with outline
 newpicture = []
