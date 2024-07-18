@@ -2,37 +2,45 @@ import pygame
 import sys
 import math
 import sobel
-import numpy as np
-
-pygame.init()
-
-chars = '.,*+#@'
-
-
 
 if len(sys.argv) == 1:
     print("-p           [path]")
     print("-c           activate colormode")
     print("-s           set the divide size, 10 by default")
+    print("-h           show this help message")
     sys.exit()
 
 
 path = None
 colorized = False
 n = 1
-for arg in sys.argv[1:]:
+args = sys.argv[1:]
+for p, arg in enumerate(args):
     print(arg)
-    if arg == "-c":
-        colorized = True
-    elif arg[0:2] == "-s":
-        n = int(arg[2:])
-    elif arg[0:2] == "-p":
-        path = arg[2:]
+    if arg[0] == "-":
+        if arg == "-h":
+            print("this was originally made by noschXL")
+            print("Usage: python asciiart.py -p [path] -c -s [size]")
+            print("-p [path]    set the image path")
+            print("-c           activate colormode")
+            print("-s [size]    set the multiplication size, 1 by default")
+            print("-h           show this help message")
+            sys.exit()
+        if arg == "-c":
+            colorized = True
+        elif arg[0:2] == "-s":
+            print(p)
+            n = int(args[p+1])
+        elif arg[0:2] == "-p":
+            path = args[p+1]
 
 if path is None:
     print("please specify a image path using -[path]")
     sys.exit()
 
+pygame.init()
+
+chars = '.,*+#@'
 
 try:
     img = pygame.image.load(path)
