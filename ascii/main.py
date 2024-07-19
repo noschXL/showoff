@@ -1,14 +1,15 @@
-import pygame
 import sys
 import math
 import sobel
 
 if len(sys.argv) == 1:
-    print("this was originally made by noschXL")
-    print("Usage: python asciiart.py -p [path] -c -s [size]")
+    print("This was originally made by noschXL.\n")
+    print("It uses the pygame library to load the images.")
+    print("To install pygame: pip install pygame.\n")
+    print("Usage: python asciiart.py -p [path]")
     print("-p [path]    set the image path")
-    print("-c           activate colormode")
-    print("-s [size]    set the multiplication size, 1.0 by default")
+    print(f"-c           \033[38;2;255;0;0mcolormode\033[0m")
+    print("-s [size]    set the multiplication size, 1 by default")
     print("-o           draw outline (experimental)")
     print("-h           show this help message")
     sys.exit()
@@ -22,10 +23,12 @@ for p, arg in enumerate(args):
     print(arg)
     if arg[0] == "-":
         if arg == "-h":
-            print("this was originally made by noschXL")
+            print("This was originally made by noschXL.\n")
+            print("It uses the pygame library to load the images.")
+            print("To install pygame: pip install pygame.\n")
             print("Usage: python asciiart.py -p [path] -c -s [size]")
             print("-p [path]    set the image path")
-            print("-c           activate colormode")
+            print(f"-c           \033[38;2;255;0;0mcolormode\033[0m")
             print("-s [size]    set the multiplication size, 1 by default")
             print("-o           draw outline (experimental)")
             print("-h           show this help message")
@@ -44,6 +47,7 @@ if path is None:
     print("please specify a image path using -[path]")
     sys.exit()
 
+import pygame
 pygame.init()
 
 chars = '.,*+#@'
