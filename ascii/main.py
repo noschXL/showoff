@@ -6,7 +6,7 @@ if len(sys.argv) == 1:
     print("This was originally made by noschXL.\n")
     print("It uses the pygame library to load the images.")
     print("To install pygame: pip install pygame.\n")
-    print("Usage: python asciiart.py -p [path]")
+    print("Usage: python main.py -p [path]")
     print("-p [path]    set the image path")
     print(f"-c           \033[38;2;255;0;0mcolormode\033[0m")
     print("-s [size]    set the multiplication size, 1 by default")
@@ -16,7 +16,7 @@ if len(sys.argv) == 1:
 
 path = None
 colorized = False
-outlineb = False
+outlineb = True
 n = 1
 args = sys.argv[1:]
 for p, arg in enumerate(args):
@@ -26,7 +26,7 @@ for p, arg in enumerate(args):
             print("This was originally made by noschXL.\n")
             print("It uses the pygame library to load the images.")
             print("To install pygame: pip install pygame.\n")
-            print("Usage: python asciiart.py -p [path] -c -s [size]")
+            print("Usage: python main.py -p [path] -c -s [size]")
             print("-p [path]    set the image path")
             print(f"-c           \033[38;2;255;0;0mcolormode\033[0m")
             print("-s [size]    set the multiplication size, 1 by default")
@@ -36,7 +36,7 @@ for p, arg in enumerate(args):
         if arg == "-c":
             colorized = True
         elif arg == "-o":
-            outlineb = True
+            outlineb = False
         elif arg[0:2] == "-s":
             n = float(args[p+1])
         elif arg[0:2] == "-p":

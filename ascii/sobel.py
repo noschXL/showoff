@@ -28,27 +28,27 @@ def sobel(path: str, n: int): #path to image, image scale
     img = pygame.transform.scale_by(img, 1 / 8)
 
             
-    imgmap = [[] for _ in range(img.width)]
-    for x in range(img.width):
-        for y in range(img.height):
+    imgmap = [[] for _ in range(img.get_width())]
+    for x in range(img.get_width()):
+        for y in range(img.get_height()):
             color = img.get_at((x,y)).b
             color = (round(color / (255 / 2)) - 1) * 255
             imgmap[x].append(color)
 
 
-    imgmap = [[] for _ in range(img.width)]
-    for x in range(img.width):
-        for y in range(img.height):
+    imgmap = [[] for _ in range(img.get_width())]
+    for x in range(img.get_width()):
+        for y in range(img.get_height()):
             color = img.get_at((x,y)).b
             color = (round(color / (255 / 2)) - 1) * 255
             imgmap[x].append(color)
 
-    picture = ["0" * img.width * 2 for _ in range(img.height)]
+    picture = ["0" * img.get_width() * 2 for _ in range(img.get_height())]
 
 
 
-    for x in range(img.height):
-        for y in range(img.height):
+    for x in range(img.get_height()):
+        for y in range(img.get_height()):
             Gx, Gy = 0,0
             try:
                 Gx = (imgmap[x-1][y + 1] + 2 * imgmap[x-1][y] + imgmap[x-1][y - 1]) - (imgmap[x+1][y + 1] + 2 * imgmap[x+1][y] + imgmap[x+1][y - 1])
@@ -119,7 +119,7 @@ if __name__ == "__main__":
     start = time.time()
     picture = sobel("/home/nosch/Documents/mint.png", 1.5)
     print(time.time()- start)
-    #screen = pygame.display.set_mode((img.width, img.height))
+    #screen = pygame.display.set_mode((img.get_width(), img.get_height()))
     #screen.blit(img, (0,0))
     #pygame.display.flip()
     for row in picture:
