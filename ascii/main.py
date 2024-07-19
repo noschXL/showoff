@@ -38,7 +38,6 @@ for p, arg in enumerate(args):
         elif arg == "-o":
             outlineb = True
         elif arg[0:2] == "-s":
-            print(p)
             n = float(args[p+1])
         elif arg[0:2] == "-p":
             path = args[p+1]
@@ -78,7 +77,6 @@ for y in range(math.ceil(imgrect.height / 2)):
         
         char = chars[round(brightness.g / (255 / len(chars))) - 1]
         if colorized and outlineb:
-            print(1)
             row += f"\033[38;2;{pixel.r};{pixel.g};{pixel.b}m{char}\033[0m"
         else:
             row += char
