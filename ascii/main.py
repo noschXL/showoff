@@ -1,6 +1,5 @@
 import sys
 import math
-import sobel
 
 if len(sys.argv) == 1:
     print("This was originally made by noschXL.\n")
@@ -46,6 +45,7 @@ if path is None:
     print("please specify a image path using -[path]")
     sys.exit()
 
+import sobel
 import pygame
 pygame.init()
 
