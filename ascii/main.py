@@ -47,6 +47,7 @@ if path is None:
 
 import sobel
 import pygame
+
 pygame.init()
 
 chars = '.,*+#@'
@@ -104,6 +105,7 @@ for y in range(len(picture) - 1):
 
 charlist = []
 
+
 for row in newpicture:
     charlist.append(list(row))
 
@@ -125,4 +127,3 @@ for y in range(len(charlist)):
 
 for row in finalpicture:
     print(row)
-    
