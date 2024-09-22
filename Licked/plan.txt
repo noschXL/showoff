@@ -1,0 +1,35 @@
+stages:
+sleeping
+working
+upgradeing
+buying groceries
+
+sleeping:
+    while sleeping an neural network decides when to wake the player based on points it will get, 
+    when the player usually wakes up,
+    when it woke up yesterday
+
+    when woken up:
+    player should be able to sleep again, lose sleep -> goes to dog
+
+    when asleep:
+    be able to wake up every 15 minutes. between 22:00 and 8:00 o'clock
+
+
+working:
+    shows time slept, money earned, current date, when to pay rent,
+    sleep points.
+
+    lets go to the update screen, groceries screen
+
+
+upgrading:
+    upgrade hearing, timer, predictability of the dog, its the dog 50 generations before min 10 generations
+
+
+buying groceries:
+    buy food for x days, sometimes with sale where you can go after work, loosing sleep, spending less money.
+
+before sleep:
+    lets you view health, if health = 0 your dead
+    lets you select how to sleep

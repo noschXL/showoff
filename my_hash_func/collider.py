@@ -1,14 +1,10 @@
+import time
 import math
 import random
-import time
 from sys import exit
 
-testdata = "test"
-passcode = "ppLojXiX"
-
-replacement = "1234567890?ß+#*'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-
 def my_hash(passcode):
+    # Your provided hash function
     if passcode == "":
         yorn = input("you entered an empty passcode, shame on you. should i generate an random 8 character code instead?\n" +
                      "If you type n the process will end and nothing happens(y/n): ")
@@ -21,8 +17,7 @@ def my_hash(passcode):
             print("i cant use an empty passcode, sry.")
             return None
         
-    
-    #hashing the passcode
+    # hashing the passcode
     passcode = "a" + passcode
     passcode = passcode.encode().hex()
     new = ""
@@ -30,6 +25,7 @@ def my_hash(passcode):
     passcode = bin(passcode)
     reversedpasscode = passcode[2:][::-1]
     newhashedpasscode = ""
+
     for i, bit in enumerate(passcode[2:]):
         boola = int(bit)
         boolb = int(reversedpasscode[i])
@@ -46,47 +42,28 @@ def my_hash(passcode):
 
     return passcode
 
-def my_encodeing(data: str, passcode: str = ""):
-
-    hashed_passcode = my_hash(passcode)
-    if hashed_passcode == None:
-        exit()
-
-    # handeling the data to be encrypted
-    dirs = [(1,0),(0,1),(-1,0),(0,-1)]
-
-    oldmode = 2
-    for charp in range(0, len(hashed_passcode), 2):
-        mode = int(hashed_passcode[charp]) % 4
-
-        if mode == 0:
-            #spiral mode
-            lenght = math.floor(math.sqrt(len(data)))
-            curr_dir = 0
-            for i in range(lenght ** 2):
-                pass
-            pass
-        elif mode == 1:
-            #matrix mode
-            pass
-        elif mode == 2:
-            #normal mode
-            pass
-        elif mode == 3:
-            #reversed mode
-            pass
+def detect_collisions(range_limit):
+    hash_dict = {}
+    collisions = []
+    
+    start = time.time()
+    
+    for x in range(range_limit):
+        hash_value = my_hash(str(x))
+        
+        if hash_value in hash_dict:
+            collisions.append((hash_dict[hash_value], x, hash_value))
         else:
-            print(f"something went wrong {mode = }")
-
-generated = []
-start = time.time()
-for x in range(100000):
-    gened = my_hash(str(x))
-    if gened in generated:
-        #print(f"whoops at{generated.index(gened)} which is {generated[generated.index(gened)]} and {x} with hash {gened}")
-        pass
+            hash_dict[hash_value] = x
+    
+    print(f"Runtime: {time.time() - start}s")
+    
+    if collisions:
+        print("Collisions found:")
+        for item in collisions:
+            print(f"Original input: {item[0]}, Collision input: {item[1]}, Hash: {item[2]}")
     else:
-        generated.append(gened)
-    print(f"{x = }")
+        print("No collisions found.")
 
-print(f"runtime: {time.time() - start}s")
+# Adjust the range limit based on your needs
+detect_collisions(10000)
