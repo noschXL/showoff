@@ -23,7 +23,7 @@ def GetMoves(board: list[list[int]], piece: list[int]) -> list[list[int]]: #retu
     type = clear_bit(type, 3)
     type = clear_bit(type, 4)
     type += 0
-    color = (board[piece[0]][piece[1]] >> 3) - 1
+    color = (board[piece[0]][piece[1]] >> 3)
     
     recursive = not (type in [KNIGHT, KING])
 
@@ -39,9 +39,9 @@ def GetMoves(board: list[list[int]], piece: list[int]) -> list[list[int]]: #retu
                 field = [piece[0] + move[0], piece[1] + move[1]]
                 if (field[0] < 0) or (field[0] > 7) or (field[1] < 0) or (field[1] > 7):
                     break
-                fcolor = (board[field[0]][field[1]] >> 3) - 1
+                fcolor = (board[field[0]][field[1]] >> 3)
 
-                if fcolor == -1:
+                if fcolor == EMPTY:
                     moves.append(field)
                 elif fcolor == color:
                     break
@@ -54,10 +54,10 @@ def GetMoves(board: list[list[int]], piece: list[int]) -> list[list[int]]: #retu
         else:
             field = [piece[0] + move[0], piece[1] + move[1]]
             if (field[0] < 0) or (field[0] > 7) or (field[1] < 0) or (field[1] > 7):
-                break
-            fcolor = (board[field[0]][field[1]] >> 3) - 1
+                continue
+            fcolor = (board[field[0]][field[1]] >> 3)
 
-            if fcolor == -1:
+            if fcolor == EMPTY:
                 moves.append(field)
             elif fcolor == color:
                 continue
@@ -70,15 +70,15 @@ def GetMoves(board: list[list[int]], piece: list[int]) -> list[list[int]]: #retu
     return moves
 
 def GetPawnMoves(board: list[list[int]], piece: list[int]) -> list[list[int]]: # -n-
-    type = deepcopy(board[piece[0]][piece[1]])
+    type = board[piece[0]][piece[1]]
     type = clear_bit(type, 3)
     type = clear_bit(type, 4)
 
-    color = (board[piece[0]][piece[1]] >> 3) - 1
+    color = (board[piece[0]][piece[1]] >> 3)
 
     moves = []
 
-    if color == 0: #* white is the first bit
+    if color == 1: #* white is the first bit
         moveoffset = directions[PAWN + WHITE]
     else:
         moveoffset = directions[PAWN + BLACK]
@@ -86,12 +86,12 @@ def GetPawnMoves(board: list[list[int]], piece: list[int]) -> list[list[int]]: #
     for i, move in enumerate(moveoffset):
         field = [piece[0] + move[0], piece[1] + move[1]]
         if (field[0] < 0) or (field[0] > 7) or (field[1] < 0) or (field[1] > 7):
-            break
-        fcolor = (board[piece[0]][piece[1]] >> 3) - 1
-        print(field, fcolor)
+            continue
+        fcolor = (board[field[0]][field[1]] >> 3)
+        print(f"field, fcolor, i, color: {field, fcolor, i, color}")
 
         if i == 0: #* one forward
-            if fcolor == -1:
+            if fcolor == EMPTY:
                 moves.append(field)
             elif fcolor == color:
                 continue
@@ -101,7 +101,7 @@ def GetPawnMoves(board: list[list[int]], piece: list[int]) -> list[list[int]]: #
                 raise ValueError("idk whats wrong")
             
         elif i == 1: #* 2 forward
-            if fcolor == -1 and (color == 1 and piece[0] == 1) or (color == 0 and piece[0] == 7):
+            if fcolor == EMPTY and ((color == 2 and piece[0] == 1) or (color == 1 and piece[0] == 6)):
                 moves.append(field)
             elif fcolor == color:
                 continue
@@ -111,7 +111,7 @@ def GetPawnMoves(board: list[list[int]], piece: list[int]) -> list[list[int]]: #
                 raise ValueError("idk whats wrong")
             
         elif i == 2 or i == 3:
-            if fcolor == -1:
+            if fcolor == EMPTY:
                 continue
             elif fcolor == color:
                 continue
@@ -123,4 +123,6 @@ def GetPawnMoves(board: list[list[int]], piece: list[int]) -> list[list[int]]: #
     return moves
 
 if __name__ == "__main__":
-    print((PAWN + WHITE >> 3) - 1)
+    print((PAWN + WHITE >> 3)) # 1
+    print((PAWN + BLACK >> 3)) # 2
+    print((EMPTY >> 3))        # 0

@@ -43,7 +43,6 @@ def parseFen(notation: str):
     for char in notation:
         if char.lower() == "p":
             board[row][colum] = PAWN + (BLACK if char.lower() == char else WHITE)
-            print(board[row][colum])
             colum += 1
         elif char.lower() == "b":
             board[row][colum] = BISHOP + (BLACK if char.lower() == char else WHITE)

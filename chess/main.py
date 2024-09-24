@@ -41,8 +41,10 @@ def parsemouse(board: list[list[int]], player: bool):
 
     if selected is None and color == player and board[y][x]:
         selected = [y,x]
+        moves = GetMoves(board, selected)
+        print(moves, selected)
 
-    elif selected is not None and [selected] in GetMoves(board, selected):
+    elif selected is not None and [y, x] in GetMoves(board, selected):
         board[y][x] = board[selected[0]][selected[1]]
         board[selected[0]][selected[1]] = EMPTY
         selected = None
