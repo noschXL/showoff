@@ -6,7 +6,7 @@ from Spritesheet import spritesheet
 from settings import *
 from Renderer import *
 from MoveGenerator import GetMoves
-from helper import parseFen
+from helper import parseFen, clear_bit
 
 path = os.path.abspath(os.path.dirname(__file__))
 
@@ -29,32 +29,55 @@ def parsemouse(board: list[list[int]], player: bool):
     lastInput = pressed
 
     if selected is not None:
-        pygame.draw.rect(screen, "#F9E076", (selected[1] * 70, selected[0] * 70, 70, 70))
+        pygame.draw.rect(screen, "#F9E076", (selected[1] * 70 * sizefactor, selected[0] * 70 * sizefactor, 70 * sizefactor, 70 * sizefactor))
 
     if not clicked:
         return player, board
     
     x, y = pygame.mouse.get_pos()
-    x, y = floor(x / 70), floor(y / 70)
+    x, y = floor(x / (70 * sizefactor)), floor(y / (70 * sizefactor))
 
     color = not (board[y][x] >> 3) - 1
 
-    if selected is None and color == player and board[y][x]:
+    if color == player and board[y][x]:
         selected = [y,x]
-        moves = GetMoves(board, selected)
-        print(moves, selected)
 
-    elif selected is not None and [y, x] in GetMoves(board, selected):
+    elif selected is not None and [y, x] in GetMoves(board, selected, allowed):
+
+        type = board[selected[0]][selected[1]]
+        color = type >> 3
+        type = clear_bit(type, 3)
+        type = clear_bit(type, 4)
+
+        if type == KING:
+            if color == 1:
+                if selected[1] - x == 2:
+                    board[y][x + 1] = board[y][0]
+                    board[y][0] = EMPTY
+                elif selected[1] - x == -2:
+                    board[y][x - 1] = board[y][7]
+                    board[y][7] = EMPTY
+            elif color == 2:
+                if selected[1] - x == 2:
+                    board[y][x + 1] = board[y][0]
+                    board[y][0] = EMPTY
+                elif selected[1] - x == -2:
+                    board[y][x - 1] = board[y][7]
+                    board[y][7] = EMPTY
+
         board[y][x] = board[selected[0]][selected[1]]
+
         board[selected[0]][selected[1]] = EMPTY
+
         selected = None
         player = not player
+
     else:
         selected = None
 
     return player, board
 
-screen = pygame.display.set_mode((70 * 8, 70 * 8))
+screen = pygame.display.set_mode((70 * 8 * sizefactor, 70 * 8 * sizefactor))
 
 whiteSpriteSheet = spritesheet(os.path.join(path, "img", "pieces_white.png"))
 blackSpriteSheet = spritesheet(os.path.join(path, "img", "pieces_black.png"))
@@ -63,7 +86,15 @@ imgrects = [(x * 32,0,32,32) for x in range(6)]
 images = [] + whiteSpriteSheet.images_at(imgrects, (255,0,0))
 images += blackSpriteSheet.images_at(imgrects, (255,0,0))
 
-board = parseFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR")
+newimgs = []
+if sizefactor != 1:
+    for img in images:
+        newimgs.append(pygame.transform.scale_by(img, sizefactor))
+
+    images = newimgs
+
+
+board, allowed = parseFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
 
 player = True
 

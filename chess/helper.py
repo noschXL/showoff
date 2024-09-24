@@ -12,6 +12,8 @@ def parseFen(notation: str):
     needed_fields = 0
 
     for char in notation:
+        if char == " ":
+            break
         try:
             needed_fields += int(char)
             continue
@@ -40,7 +42,7 @@ def parseFen(notation: str):
     board = [[EMPTY] * 8 for _ in range(8)]
     colum = 0
     row = 0
-    for char in notation:
+    for i, char in enumerate(notation):
         if char.lower() == "p":
             board[row][colum] = PAWN + (BLACK if char.lower() == char else WHITE)
             colum += 1
@@ -62,8 +64,12 @@ def parseFen(notation: str):
         elif char == "/":
             row += 1
             colum = 0
+        elif char == " ":
+            break
         else:
             colum += int(char)
-    
-    return board
+
+    special = notation[i + 3:]
+
+    return board, special
 

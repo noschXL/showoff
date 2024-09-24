@@ -18,3 +18,5 @@ BLACK = 16
 
 WHITECOLOR = "#d0a465"
 BLACKCOLOR = "#5d421c"
+
+sizefactor = 2 # default is 1, so its 600 *1 px in width and height
