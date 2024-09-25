@@ -162,7 +162,18 @@ def GetPawnMoves(board: list[list[int]], piece: list[int], allowed: str) -> list
                 raise ValueError("idk whats wrong")
             
         elif i == 2 or i == 3:
-            if fcolor == EMPTY:
+
+            fenComp = allowed.split()[1]
+
+            canPassant = False
+
+            if fenComp != "-":
+                if [int(fenComp[1]), BOTTOMLETTERS.index(fenComp[0])] == field:
+
+                    canPassant = True
+            if canPassant:
+                moves.append(field)
+            elif fcolor == EMPTY:
                 continue
             elif fcolor == color:
                 continue
@@ -172,6 +183,7 @@ def GetPawnMoves(board: list[list[int]], piece: list[int], allowed: str) -> list
                 raise ValueError("idk whats wrong")
 
     return moves
+
 
 def GetEnPassanteMoves():
     pass

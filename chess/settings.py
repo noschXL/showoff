@@ -9,6 +9,8 @@ KING = 6
 WHITE = 8
 BLACK = 16
 
+BOTTOMLETTERS = "abcdefgh"
+
 #   piece
 #    |||
 #0b00000
