@@ -5,7 +5,7 @@ from math import floor
 from Spritesheet import spritesheet
 from settings import *
 from Renderer import *
-from MoveGenerator import GetMoves
+from MoveGenerator import Checkmated, GetLegalMoves
 from helper import parseFen, MoveTo
 
 path = os.path.abspath(os.path.dirname(__file__))
@@ -44,13 +44,19 @@ def parsemouse(board: list[list[int]], player: bool, allowed: str):
 
     if color == player and board[y][x]:
         selected = [y,x]
-        moves = GetMoves(board, selected, allowed)
+        moves = GetLegalMoves(board, selected, allowed)
 
     elif selected is not None and [y, x] in moves:
 
         board, allowed = MoveTo(board, [y, x], selected, allowed)
 
-        print("1: " + allowed)
+        if Checkmated(board, not player, allowed):
+            print(f"oh no, {"white" if not player else "black"} lost the game, gg.")
+            while True:
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        pygame.quit()
+                        sys.exit()
 
         selected = None
         moves = None

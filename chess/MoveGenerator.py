@@ -19,7 +19,7 @@ directions = { PAWN + WHITE: [[-1, 0], [-2, 0], [-1, 1], [-1, -1]],
                        [-1, 0], [1, 0], [0, -1], [0, 1]]
                }
 
-def GetPseudoLegalMoves(board: list[list[int]], piece: list[int], allowed: str) -> list[list[int]]: #returns a list of possible move coords
+def GetPseudoMoves(board: list[list[int]], piece: list[int], allowed: str) -> list[list[int]]: #returns a list of possible move coords
     type = board[piece[0]][piece[1]]
     color = type >> 3
     type = clear_bit(type, 3)
@@ -189,7 +189,7 @@ def GetAllPseudoMoves(board: list[list[int]], player: bool, allowed: str) -> lis
         for x, colum in enumerate(row):
             fcolor = (board[y][x] >> 3)
             if fcolor == color:
-                moves += GetPseudoLegalMoves(board, [y,x], allowed)
+                moves += GetPseudoMoves(board, [y,x], allowed)
 
     return moves
 
@@ -199,22 +199,41 @@ def GetFirst(board: list[list[int]], piece: int) -> list[int]:
             if colum == piece:
                 return [y,x]
 
-def GetMoves(board: list[list[int]], piece: list[int], allowed: str) -> list[list[int]]: #returns a list of possible move coords
-    pseudomoves = GetPseudoLegalMoves(board, piece, allowed)
-    color = (board[piece[0]][piece[1]] >> 3)
+def Checked(board: list[list[int]], player: bool, allowed: str) -> bool:
+    color = 1 if player else 2
+    myKingPos = GetFirst(board, KING + (WHITE if color == 1 else BLACK))
+    enemymoves = GetAllPseudoMoves(board, color == 2, allowed)
+    return myKingPos in enemymoves
 
-    print("2: " + allowed)
+def GetLegalMoves(board: list[list[int]], piece: list[int], allowed: str) -> list[list[int]]: #returns a list of possible move coords
+    pseudomoves = GetPseudoMoves(board, piece, allowed)
+    color = (board[piece[0]][piece[1]] >> 3)
 
     legalmoves = []
 
     for move in pseudomoves:
         newboard, newallowed = MoveTo(deepcopy(board), move, piece, allowed)
-        myKingPos = GetFirst(newboard, KING + (WHITE if color == 1 else BLACK))
-        enemymoves = GetAllPseudoMoves(newboard, color == 2, newallowed)
-        if not (myKingPos in enemymoves):
+        if not Checked(newboard, color == 1, newallowed):
             legalmoves.append(move)
 
     return legalmoves
+
+def GetAllLegalMoves(board: list[list[int]], player: bool, allowed: str) -> list[list[int]]:
+    color = 1 if player else 2
+
+    moves = []
+
+    for y, row in enumerate(board):
+        for x, colum in enumerate(row):
+            fcolor = (board[y][x] >> 3)
+            if fcolor == color:
+                moves += GetLegalMoves(board, [y,x], allowed)
+
+    return moves
+
+def Checkmated(board: list[list[int]], player: bool, allowed:str) -> bool:
+    if Checked(board, player, allowed):
+        return len(GetAllLegalMoves(board, player, allowed)) == 0
 
 if __name__ == "__main__":
     print((PAWN + WHITE >> 3)) # 1
