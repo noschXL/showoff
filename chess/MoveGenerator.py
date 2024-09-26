@@ -1,5 +1,6 @@
 from settings import *
-from helper import clear_bit
+from helper import clear_bit, timed, MoveTo
+from copy import deepcopy
 
 directions = { PAWN + WHITE: [[-1, 0], [-2, 0], [-1, 1], [-1, -1]],
                PAWN + BLACK: [[1, 0], [2, 0], [1, 1], [1, -1]],
@@ -17,7 +18,8 @@ directions = { PAWN + WHITE: [[-1, 0], [-2, 0], [-1, 1], [-1, -1]],
                KING: [[-1,-1], [-1, 1], [1, 1], [1,-1],
                        [-1, 0], [1, 0], [0, -1], [0, 1]]
                }
-def GetMoves(board: list[list[int]], piece: list[int], allowed: str) -> list[list[int]]: #returns a list of possible move coords
+
+def GetPseudoLegalMoves(board: list[list[int]], piece: list[int], allowed: str) -> list[list[int]]: #returns a list of possible move coords
     type = board[piece[0]][piece[1]]
     color = type >> 3
     type = clear_bit(type, 3)
@@ -146,7 +148,7 @@ def GetPawnMoves(board: list[list[int]], piece: list[int], allowed: str) -> list
                 raise ValueError("idk whats wrong")
             
         elif i == 1: #* 2 forward
-            if fcolor == EMPTY and ((color == 2 and piece[0] == 1) or (color == 1 and piece[0] == 6)):
+            if len(moves) != 0 and fcolor == EMPTY and ((color == 2 and piece[0] == 1) or (color == 1 and piece[0] == 6)):
                 moves.append(field)
             elif fcolor == color:
                 continue
@@ -178,12 +180,41 @@ def GetPawnMoves(board: list[list[int]], piece: list[int], allowed: str) -> list
 
     return moves
 
+def GetAllPseudoMoves(board: list[list[int]], player: bool, allowed: str) -> list[list[int]]:
+    color = 1 if player else 2
 
-def GetEnPassanteMoves():
-    pass
+    moves = []
 
-def GetCastleMoves():
-    pass
+    for y, row in enumerate(board):
+        for x, colum in enumerate(row):
+            fcolor = (board[y][x] >> 3)
+            if fcolor == color:
+                moves += GetPseudoLegalMoves(board, [y,x], allowed)
+
+    return moves
+
+def GetFirst(board: list[list[int]], piece: int) -> list[int]:
+    for y, row in enumerate(board):
+        for x, colum in enumerate(row):
+            if colum == piece:
+                return [y,x]
+
+def GetMoves(board: list[list[int]], piece: list[int], allowed: str) -> list[list[int]]: #returns a list of possible move coords
+    pseudomoves = GetPseudoLegalMoves(board, piece, allowed)
+    color = (board[piece[0]][piece[1]] >> 3)
+
+    print("2: " + allowed)
+
+    legalmoves = []
+
+    for move in pseudomoves:
+        newboard, newallowed = MoveTo(deepcopy(board), move, piece, allowed)
+        myKingPos = GetFirst(newboard, KING + (WHITE if color == 1 else BLACK))
+        enemymoves = GetAllPseudoMoves(newboard, color == 2, newallowed)
+        if not (myKingPos in enemymoves):
+            legalmoves.append(move)
+
+    return legalmoves
 
 if __name__ == "__main__":
     print((PAWN + WHITE >> 3)) # 1

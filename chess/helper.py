@@ -1,4 +1,6 @@
+import time
 from settings import *
+from functools import wraps
 
 def set_bit(value, bit):
     return value | (1<<bit)
@@ -75,3 +77,84 @@ def parseFen(notation: str):
 
     return board, special, player
 
+def timed(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        print(f"running: {func.__name__}")
+        start = time.time()
+        output = func(*args, **kwargs)
+        print(f"{func.__name__} took {time.time() - start}s to complete")
+        return output
+    
+    return wrapper
+
+def MoveTo(board: list[list[int]], new, old, allowed):
+
+    y, x = new[0], new[1]
+
+    type = board[old[0]][old[1]]
+    color = type >> 3
+    type = clear_bit(type, 3)
+    type = clear_bit(type, 4)
+
+    fenComp = allowed.split()
+
+    toReml = ""
+
+    if board[0][0] != ROOK + BLACK:
+        toReml += "q"
+    if board[0][7] != ROOK + BLACK:
+        toReml += "k"
+    if board[7][0] != ROOK + WHITE:
+        toReml += "Q"
+    if board[7][7] != ROOK + WHITE:
+        toReml += "K"
+
+    if type == KING:
+        if color == 1:
+            if old[1] - x == 2:    #queenside
+                board[y][x + 1] = board[y][0]
+                board[y][0] = EMPTY
+            elif old[1] - x == -2: #kingside
+                board[y][x - 1] = board[y][7]
+                board[y][7] = EMPTY
+            toReml += "KQ"
+        elif color == 2:
+            if old[1] - x == 2:    #queenside
+                board[y][x + 1] = board[y][0]
+                board[y][0] = EMPTY
+            elif old[1] - x == -2: #kingside
+                board[y][x - 1] = board[y][7]
+                board[y][7] = EMPTY
+            toReml += "kq"
+
+    if toReml is not None:
+        for toRem in toReml:
+            fenComp[0] = fenComp[0].replace(toRem, "")
+
+        if len(fenComp[0]) == EMPTY:
+                fenComp[0] = "-"
+
+    if type == PAWN:
+        if fenComp[1] != "-":
+            if [int(fenComp[1][1]), BOTTOMLETTERS.index(fenComp[1][0])] == [y,x]:
+                if color == 1:     #white
+                    board[y + 1][x] = EMPTY
+                elif color == 2:   #black
+                    board[y + 1][x] = EMPTY
+
+    fenComp[1] = "-"
+    if type == PAWN:
+        if color == 1 and abs(old[0] - y) == 2: #white
+            fenComp[1] = BOTTOMLETTERS[x] + str(y + 1)
+        elif color == 2 and abs(old[0] - y) == 2: #black
+            fenComp[1] = BOTTOMLETTERS[x] + str(y - 1)
+
+    allowed = fenComp[0] + " " + fenComp[1] + " " + fenComp[2] + " " + fenComp[3]   
+
+    board[y][x] = board[old[0]][old[1]]
+
+    board[old[0]][old[1]] = EMPTY
+
+
+    return board, allowed

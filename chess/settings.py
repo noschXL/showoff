@@ -20,5 +20,7 @@ BOTTOMLETTERS = "abcdefgh"
 
 WHITECOLOR = "#d0a465"
 BLACKCOLOR = "#5d421c"
+SELECTEDCOLOR = "#f9e076"
+MOVEABLECOLOR = "#06402b"
 
-sizefactor = 2 # default is 1, so its 600 *1 px in width and height
+sizefactor = 1 # default is 1, so its 600 *1 px in width and height
