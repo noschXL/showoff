@@ -50,14 +50,6 @@ def parsemouse(board: list[list[int]], player: bool, allowed: str):
 
         board, allowed = MoveTo(board, [y, x], selected, allowed)
 
-        if Checkmated(board, not player, allowed):
-            print(f"oh no, {"white" if not player else "black"} lost the game, gg.")
-            while True:
-                for event in pygame.event.get():
-                    if event.type == pygame.QUIT:
-                        pygame.quit()
-                        sys.exit()
-
         selected = None
         moves = None
         player = not player
@@ -100,4 +92,15 @@ while True:
 
 
     pygame.display.flip()
+
+    if Checkmated(board, player, allowed):
+        print(f"oh no, {"white" if player else "black"} lost the game, gg.")
+        drawBoard(screen, board, images)
+        pygame.display.flip()
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+
     clock.tick(60)

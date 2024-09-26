@@ -24,3 +24,7 @@ def drawMoveable(screen, moves: list[list[int]] | None = None):
 def drawSelected(screen, selected: list[int] | None = None):
     if selected is not None:
         pygame.draw.rect(screen, SELECTEDCOLOR, (selected[1] * 70 * sizefactor, selected[0] * 70 * sizefactor, 70 * sizefactor, 70 * sizefactor))
+
+def drawBoard(screen, board, images):
+    drawSquares(screen)
+    drawPieces(screen, board, images)
