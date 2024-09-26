@@ -18,7 +18,6 @@ directions = { PAWN + WHITE: [[-1, 0], [-2, 0], [-1, 1], [-1, -1]],
                        [-1, 0], [1, 0], [0, -1], [0, 1]]
                }
 def GetMoves(board: list[list[int]], piece: list[int], allowed: str) -> list[list[int]]: #returns a list of possible move coords
-    print(allowed)
     type = board[piece[0]][piece[1]]
     color = type >> 3
     type = clear_bit(type, 3)
@@ -83,16 +82,13 @@ def GetMoves(board: list[list[int]], piece: list[int], allowed: str) -> list[lis
             if "Q" in allowed:
                 field = [piece[0], piece[1] - 1]
                 fcolor = (board[field[0]][field[1]] >> 3)
-                print(field, fcolor)
                 if fcolor == EMPTY:
                     field = [piece[0], piece[1] - 2]
                     fcolor = (board[field[0]][field[1]] >> 3)    
                     if fcolor == EMPTY:
-                        print(field, fcolor)
                         field2 = [piece[0], piece[1] - 3]
                         fcolor2 = (board[field2[0]][field2[1]] >> 3)    
                         if fcolor2 == EMPTY:
-                            print(field, fcolor)
                             moves.append(field)
 
         else:
@@ -116,8 +112,6 @@ def GetMoves(board: list[list[int]], piece: list[int], allowed: str) -> list[lis
                         fcolor2 = (board[field2[0]][field2[1]] >> 3)    
                         if fcolor2 == EMPTY:
                             moves.append(field)
-
-    print(moves)
 
     return moves
 

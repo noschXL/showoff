@@ -51,7 +51,16 @@ def parsemouse(board: list[list[int]], player: bool, allowed: str):
 
         fenComp = allowed.split()
 
-        toRem = None
+        toReml = ""
+
+        if board[0][0] != ROOK + BLACK:
+            toReml += "q"
+        if board[0][7] != ROOK + BLACK:
+            toReml += "k"
+        if board[7][0] != ROOK + WHITE:
+            toReml += "Q"
+        if board[7][7] != ROOK + WHITE:
+            toReml += "K"
 
         if type == KING:
             if color == 1:
@@ -61,7 +70,7 @@ def parsemouse(board: list[list[int]], player: bool, allowed: str):
                 elif selected[1] - x == -2: #kingside
                     board[y][x - 1] = board[y][7]
                     board[y][7] = EMPTY
-                toReml = "KQ"
+                toReml += "KQ"
             elif color == 2:
                 if selected[1] - x == 2:    #queenside
                     board[y][x + 1] = board[y][0]
@@ -69,16 +78,14 @@ def parsemouse(board: list[list[int]], player: bool, allowed: str):
                 elif selected[1] - x == -2: #kingside
                     board[y][x - 1] = board[y][7]
                     board[y][7] = EMPTY
-                toReml = "kq"
+                toReml += "kq"
 
-            if toReml is not None:
-                for toRem in toReml:
-                    fenComp[0] = fenComp[0].replace(toRem, "")
+        if toReml is not None:
+            for toRem in toReml:
+                fenComp[0] = fenComp[0].replace(toRem, "")
 
-                if len(fenComp[0]) == EMPTY:
-                        fenComp[0] = "-"
-
-        print(fenComp)
+            if len(fenComp[0]) == EMPTY:
+                    fenComp[0] = "-"
 
         if type == PAWN:
             if fenComp[1] != "-":
@@ -95,17 +102,7 @@ def parsemouse(board: list[list[int]], player: bool, allowed: str):
             elif color == 2 and abs(selected[0] - y) == 2: #black
                 fenComp[1] = BOTTOMLETTERS[x] + str(y - 1)
 
-            print(fenComp)
-
-
-        print(fenComp)
-
-        allowed = fenComp[0] + " " + fenComp[1] + " " + fenComp[2] + " " + fenComp[3]
-
-
-# i took pasant if pawn on takepassante
-
-        allowed = fenComp[0] + " " + fenComp[1] + " " + fenComp[2] + " " + fenComp[3]    
+        allowed = fenComp[0] + " " + fenComp[1] + " " + fenComp[2] + " " + fenComp[3]   
 
         board[y][x] = board[selected[0]][selected[1]]
 
@@ -137,9 +134,7 @@ if sizefactor != 1:
 
 #org: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
 
-board, allowed = parseFen("r3k2r/ppp2ppp/2nq1n2/2bppb2/2BPPB2/2NQ1N2/PPP2PPP/R3K2R  w KQkq - 0 1")
-
-player = True
+board, allowed, player = parseFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
 
 while True:
     for event in pygame.event.get():

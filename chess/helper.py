@@ -71,5 +71,7 @@ def parseFen(notation: str):
 
     special = notation[i + 3:]
 
-    return board, special
+    player = notation[i + 1] == "w"
+
+    return board, special, player
 
