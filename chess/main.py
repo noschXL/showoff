@@ -18,6 +18,8 @@ moves = None
 
 clock = pygame.time.Clock()
 
+pygame.display.set_caption("Chess")
+
 def parsemouse(board: list[list[int]], player: bool, allowed: str):
     global lastInput
     global selected
