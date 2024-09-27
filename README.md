@@ -2,7 +2,7 @@
 this is just showoff lol
 
 # finished projects
-chess
+chess,
 ascii
 
 # ascii
