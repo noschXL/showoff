@@ -108,8 +108,6 @@ while True:
 
                     newlastclicked = newpressed
 
-                    print(newlastclicked is newpressed)
-
                     for event in pygame.event.get():
                         if event.type == pygame.QUIT:
                             pygame.quit()
@@ -118,7 +116,6 @@ while True:
                     for i, rect in enumerate(rects):
                         if rect.collidepoint(pygame.mouse.get_pos()) and clicked:
                             board[y*7][x] = PROMOSELECT[i] + color
-                            print(board[y*7][x])
                             end = True
 
 
