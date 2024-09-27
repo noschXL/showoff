@@ -7,6 +7,7 @@ from settings import *
 from Renderer import *
 from MoveGenerator import Checkmated, GetLegalMoves
 from helper import parseFen, MoveTo
+from copy import deepcopy
 
 path = os.path.abspath(os.path.dirname(__file__))
 
@@ -89,6 +90,36 @@ while True:
     drawSquares(screen)
     player, board, allowed = parsemouse(board, player, allowed)
     drawPieces(screen, board, images)
+
+    for y in range(2):
+        for x in range(8):
+            color = WHITE * (y+1)
+            if board[y * 7][x] == PAWN + color:
+                rects = drawPromotion(screen, [y,x], images)
+                pygame.display.flip()
+                end = False
+                newlastclicked = True
+                while not end:
+                    clicked = False
+                    newpressed = pygame.mouse.get_pressed()[0] # check only the first mouse button (left mouse button)
+
+                    if not newlastclicked and newpressed:  #only on first press
+                        clicked = True
+
+                    newlastclicked = newpressed
+
+                    print(newlastclicked is newpressed)
+
+                    for event in pygame.event.get():
+                        if event.type == pygame.QUIT:
+                            pygame.quit()
+                            sys.exit()
+
+                    for i, rect in enumerate(rects):
+                        if rect.collidepoint(pygame.mouse.get_pos()) and clicked:
+                            board[y*7][x] = PROMOSELECT[i] + color
+                            print(board[y*7][x])
+                            end = True
 
 
     pygame.display.flip()

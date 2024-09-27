@@ -28,3 +28,21 @@ def drawSelected(screen, selected: list[int] | None = None):
 def drawBoard(screen, board, images):
     drawSquares(screen)
     drawPieces(screen, board, images)
+
+def drawPromotion(screen: pygame.Surface, promoPos: list[int], images: list[pygame.Surface]):
+    color = WHITE if promoPos[0] == 0 else BLACK
+    rects = []
+    if promoPos[0] == 0:
+        for i in range(4):
+            rect = pygame.Rect(promoPos[1] * 70 * sizefactor, (promoPos[0] + i) * 70 * sizefactor, 70 * sizefactor, 70 * sizefactor)
+            rects.append(rect)
+            pygame.draw.rect(screen, SELECTEDCOLOR, rect)
+            screen.blit(images[PROMOSELECT[i] - 1], rect)
+    else:
+        for i in range(4):
+            rect = pygame.Rect(promoPos[1] * 70 * sizefactor, 70 * 8 * sizefactor -((promoPos[0] + i) * 70 * sizefactor), 70 * sizefactor, 70 * sizefactor)
+            pygame.draw.rect(screen, SELECTEDCOLOR, rect)
+            screen.blit(images[PROMOSELECT[i] - 7], rect)
+            rects.append(rect)
+
+    return rects

@@ -11,6 +11,8 @@ BLACK = 16
 
 BOTTOMLETTERS = "abcdefgh"
 
+PROMOSELECT = [QUEEN, ROOK, BISHOP, KNIGHT]
+
 #   piece
 #    |||
 #0b00000
