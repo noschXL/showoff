@@ -5,7 +5,7 @@ from math import floor
 from Spritesheet import spritesheet
 from settings import *
 from Renderer import *
-from MoveGenerator import Checkmated, GetLegalMoves
+from MoveGenerator import Checkmated, GetLegalMoves, GetAllLegalMoves
 from helper import parseFen, MoveTo
 from copy import deepcopy
 
@@ -120,6 +120,17 @@ while True:
 
 
     pygame.display.flip()
+
+    if GetAllLegalMoves(board, player, allowed) == [] and not Checkmated(board, player ,allowed):
+        print("remis")
+        drawBoard(screen, board, images)
+        pygame.display.flip()
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+
 
     if Checkmated(board, player, allowed):
         print(f"oh no, {"white" if player else "black"} lost the game, gg.")
