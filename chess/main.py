@@ -123,6 +123,7 @@ while True:
 
     if GetAllLegalMoves(board, player, allowed) == [] and not Checkmated(board, player ,allowed):
         print("remis")
+        pygame.display.set_caption("remis")
         drawBoard(screen, board, images)
         pygame.display.flip()
         while True:
@@ -134,6 +135,7 @@ while True:
 
     if Checkmated(board, player, allowed):
         print(f"oh no, {"white" if player else "black"} lost the game, gg.")
+        pygame.display.set_caption(f"oh no, {"white" if player else "black"} lost the game, gg.")
         drawBoard(screen, board, images)
         pygame.display.flip()
         while True:
