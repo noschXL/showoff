@@ -81,7 +81,7 @@ if sizefactor != 1:
 
 #org: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
 
-board, allowed, player = parseFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
+board, allowed, player = parseFen(STARTFEN)
 
 while True:
     for event in pygame.event.get():
@@ -133,6 +133,10 @@ while True:
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
+            if pygame.key.get_pressed()[pygame.K_r]:
+                board, allowed, player = parseFen(STARTFEN)
+                pygame.display.set_caption("Chess")
+                break
 
 
     if Checkmated(board, player, allowed):
@@ -145,5 +149,10 @@ while True:
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
+
+            if pygame.key.get_pressed()[pygame.K_r]:
+                board, allowed, player = parseFen(STARTFEN)
+                pygame.display.set_caption("Chess")
+                break
 
     clock.tick(60)

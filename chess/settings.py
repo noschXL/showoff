@@ -19,7 +19,7 @@ PROMOSELECT = [QUEEN, ROOK, BISHOP, KNIGHT]
 #  ^^
 #  ||
 #color
-
+STARTFEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
 WHITECOLOR = "#d0a465"
 BLACKCOLOR = "#5d421c"
 SELECTEDCOLOR = "#f9e076"
