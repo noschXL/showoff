@@ -140,8 +140,8 @@ while True:
 
 
     if Checkmated(board, player, allowed):
-        print(f"oh no, {"white" if player else "black"} lost the game, gg.")
-        pygame.display.set_caption(f"oh no, {"white" if player else "black"} lost the game, gg.")
+        print("oh no, " + "white" if player else "black" + " lost the game")
+        pygame.display.set_caption("oh no, " + "white" if player else "black" + " lost the game")
         drawBoard(screen, board, images)
         pygame.display.flip()
         while True:

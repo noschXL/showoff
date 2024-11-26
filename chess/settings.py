@@ -6,6 +6,12 @@ ROOK = 4
 QUEEN = 5
 KING = 6
 
+PAWNVALUE = 100
+BISHOPVALUE = 300
+KNIGHTVALUE = 300
+ROOKVALUE = 500
+QUEENVALUE = 900
+
 WHITE = 8
 BLACK = 16
 
@@ -25,4 +31,4 @@ BLACKCOLOR = "#5d421c"
 SELECTEDCOLOR = "#f9e076"
 MOVEABLECOLOR = "#06402b"
 
-sizefactor = 1 # default is 1, so its 600 *1 px in width and height
+sizefactor = 2 # default is 1, so its 600 *1 px in width and height
